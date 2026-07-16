@@ -1,22 +1,37 @@
 #!/usr/bin/env Rscript
+#
+# Figure 3 pipeline: STAT5b LOF vs JIA (Xenium spatial transcriptomics).
+# Code accompanying the manuscript.
+#
+# Upstream of this script:
+#   1. preprocess_JIA11_STAT5B.R produces the merged, Harmony-integrated object.
+#   2. Cell type annotation and TLS delineation are performed manually, as described
+#      in Methods, and are stored in the metadata columns listed below.
+#
+# INPUT_RDS - annotated Seurat object, with assays Spatial (counts) and SCT (data), a
+#   umap reduction, one image per sample_id (cell centroids are read from the images),
+#   and the metadata columns:
+#     disease           "JIA" or "STAT5b LOF"
+#     sample_id         one per section; images are named accordingly
+#     section_id        tissue section
+#     Annotation_sub1   lineage (cells labelled MIX are excluded here)
+#     Annotation_sub2   subset; SL denotes sublining fibroblasts
+#     Annotation_detail cell type; Th17 denotes TH17 cells
+#     TLS_pos           non-NA for cells inside a manually traced TLS
+#     TLS_id            TLS identifier
+#
+# CELL_META_CSV - per-cell table with columns:
+#     cell_id           matches the cell names of INPUT_RDS
+#     th17_tls_label    "TLS-associated" for TH17 cells associated with a TLS
+#
+# The script performs the analysis and builds each Figure 3 panel as a ggplot object.
+# It does not write any files.
 
 INPUT_RDS          <- "seurat_object.rds"
 CELL_META_CSV      <- "cell_metadata_with_tls_dist.csv"
 JIA_EXAMPLE_SAMPLE <- "JIA5"   # representative JIA section for the spatial overlays (Panels H, K)
 
-suppressPackageStartupMessages({
-  library(Seurat)
-  library(ggplot2)
-  library(dplyr)
-  library(data.table)
-  library(RANN)
-  library(patchwork)
-  library(scales)
-  library(ggrastr)
-  library(ggrepel)
-  library(Matrix)
-  library(grid)
-})
+source("utils.R")
 
 run_nn2 <- function(data_xy, query_xy, k) {
   data_xy  <- as.matrix(data_xy)
