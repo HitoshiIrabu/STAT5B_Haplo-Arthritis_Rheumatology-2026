@@ -1,0 +1,21 @@
+# Interleukin-17A-Responsive Systemic Juvenile Idiopathic Arthritis-like Disease in a Patient Carrying a Novel Heterozygous STAT5B Loss-of-Function Variant
+
+This repository contains the R scripts used for the analyses and figure generation in the accompanying manuscript.
+
+## Files
+
+- `preprocess.R`: Data preprocessing
+- `utils.R`: Utility functions
+- `Figure3.R`: Analysis and visualization for Figure 3
+
+## Data availability
+
+The analysis code is available in this repository. Access to the underlying data is described in the Data Availability Statement of the manuscript.
+
+## Citation
+
+Please cite the accompanying manuscript when using this code.
+
+## License
+
+This project is licensed under the MIT License.
