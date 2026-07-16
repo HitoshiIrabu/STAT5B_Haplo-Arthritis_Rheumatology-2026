@@ -1,11 +1,12 @@
 #!/usr/bin/env Rscript
 
-library(Seurat)
-library(SeuratObject)
-library(stringr)
-library(dplyr)
-library(harmony)
-library(parallel)
+# Xenium preprocessing: 11 JIA samples and 1 STAT5b LOF patient.
+# Input : one Xenium output directory per sample (JIA1 ... JIA11, STAT5B)
+# Output: merged, Harmony-integrated Seurat object
+#
+# Cell type annotation and TLS delineation are performed manually on this object,
+# as described in Methods. The annotated object is the input of
+# Figure3_STAT5b_unified_pipeline.R.
 
 source("utils.R")
 
